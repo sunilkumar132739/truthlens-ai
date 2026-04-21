@@ -1,0 +1,116 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type VideoAnalysisResult = 
+ record {
+   confidence: nat;
+   editDetectionScore: nat;
+   overallVerdict: text;
+   processingStatus: text;
+   suspiciousEdits: vec text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserId = principal;
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type Timestamp = int;
+type ImageAnalysisResult = 
+ record {
+   authenticityScore: nat;
+   confidence: nat;
+   deepfakeScore: nat;
+   manipulationIndicators: vec text;
+   verdict: text;
+ };
+type HistoryItem = 
+ record {
+   classification: AnalysisClassification;
+   credibilityScore: nat;
+   id: nat;
+   kind: AnalysisKind;
+   language: text;
+   summary: text;
+   timestamp: Timestamp;
+   userId: UserId;
+ };
+type ExternalBlob = blob;
+type AnalysisResult = 
+ record {
+   biasIndicator: text;
+   classification: AnalysisClassification;
+   confidence: nat;
+   credibilityScore: nat;
+   eli15: text;
+   emotionalScore: nat;
+   explanation: text;
+   keyPhrases: vec text;
+ };
+type AnalysisKind = 
+ variant {
+   image: record {imageBlob: ExternalBlob;};
+   "text": record {snippet: text;};
+   video: record {videoBlob: ExternalBlob;};
+ };
+type AnalysisClassification = 
+ variant {
+   fake;
+   genuine;
+   misleading;
+   satire;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  analyzeImage: (imageId: text, language: text) -> (ImageAnalysisResult);
+  analyzeText: ("text": text, language: text) -> (AnalysisResult);
+  analyzeVideo: (videoId: text, language: text) -> (VideoAnalysisResult);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  getAnalysisHistory: () -> (vec HistoryItem) query;
+  getCallerUserRole: () -> (UserRole) query;
+  isCallerAdmin: () -> (bool) query;
+  setApiKey: (apiKey: text) -> ();
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+}

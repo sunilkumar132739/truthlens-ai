@@ -1,0 +1,25 @@
+{
+  "overview": "A production-ready AI-powered misinformation detection dashboard with real-time text, image, and video analysis. Features credibility scoring, emotional manipulation meters, deepfake detection, and an education mode — all in a dark-mode, visually striking interface with Hindi/English support.",
+  "features": [
+    "Real AI text analysis with credibility scores and misleading phrase highlighting",
+    "Emotional Manipulation Meter (0-100) with animated gauge",
+    "ELI15 plain-language explanations of analysis verdicts",
+    "Image deepfake detection and authenticity scoring with upload support",
+    "Video analysis with edit detection and summary verdicts",
+    "Interactive education mode on misinformation types, clickbait, and emotional manipulation",
+    "Hindi and English language toggle",
+    "Dark mode dashboard with animated charts, gauges, and classification badges",
+    "User accounts and login"
+  ],
+  "category": "ai-tools",
+  "tags": [
+    "misinformation",
+    "fact-checking",
+    "ai-analysis",
+    "deepfake-detection",
+    "media-literacy",
+    "dark-mode",
+    "multilingual"
+  ],
+  "last_updated": "2026-04-21T12:50:34.375Z"
+}
